@@ -1,0 +1,35 @@
+name: Go project CI
+
+on:
+  push:
+    branches:
+      - main  # replace with the name of your default branch if it's not 'main'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Setup Go
+        uses: actions/setup-go@v2
+        with:
+          go-version: '^1.17'  # replace with the version you're using
+
+      - name: Install dependencies
+        run: go mod download
+
+      - name: Run Revive Linter
+        run: |
+          go get -u github.com/mgechev/revive
+          revive -config revive.toml -formatter stylish ./...
+
+      - name: Run Errcheck
+        run: |
+          go get -u github.com/kisielk/errcheck
+          errcheck ./...
+
+      - name: Build
+        run: go build -o CsvManipulator ./...
