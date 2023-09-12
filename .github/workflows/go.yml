@@ -30,7 +30,7 @@ jobs:
       - name: Run Revive Linter
         run: |
           go get -u github.com/mgechev/revive
-          revive -config revive.toml -formatter stylish ./...
+          revive -formatter stylish ./...
 
       - name: Run Errcheck
         run: |
