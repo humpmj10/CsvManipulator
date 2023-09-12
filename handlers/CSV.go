@@ -1,4 +1,4 @@
-package handlers
+package handlers // Package handlers import "CsvManipulator/handlers"
 
 import (
 	"encoding/csv"
@@ -45,7 +45,11 @@ func uploadHandler(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Unable to get file", http.StatusBadRequest)
 		return
 	}
-	defer file.Close()
+	defer func() {
+		if err := file.Close(); err != nil {
+			log.Printf("Failed to close file: %v", err)
+		}
+	}()
 
 	numRows, err := services.ProcessCsv(file, shouldSort, columnIndex)
 	if err != nil {

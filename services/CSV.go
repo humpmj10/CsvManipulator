@@ -1,4 +1,4 @@
-package services
+package services // Package services import "CsvManipulator/services"
 
 import (
 	"encoding/csv"
@@ -9,12 +9,15 @@ import (
 	"strings"
 )
 
+// CsvProcessor interface
 type CsvProcessor interface {
 	ProcessCsv(file multipart.File, shouldSort bool, columnToSort int) ([][]string, error)
 }
 
+// CsvService struct
 type CsvService struct{}
 
+// ProcessCsv function
 func ProcessCsv(file multipart.File, shouldSort bool, column int) ([][]string, error) {
 	log.Println("reading csv file")
 
@@ -40,6 +43,7 @@ func ProcessCsv(file multipart.File, shouldSort bool, column int) ([][]string, e
 	return newRows, nil
 }
 
+// ProcessCsv function
 func (c *CsvService) ProcessCsv(file multipart.File, shouldSort bool, columnToSort int) ([][]string, error) {
 	return ProcessCsv(file, shouldSort, columnToSort)
 }
