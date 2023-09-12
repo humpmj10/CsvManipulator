@@ -37,5 +37,8 @@ jobs:
           go get -u github.com/kisielk/errcheck
           errcheck ./...
 
+      - name: Run Tests
+        run: go test ./...
+
       - name: Build
         run: go build -o CsvManipulator .
