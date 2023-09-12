@@ -1,0 +1,32 @@
+basePath: /
+host: localhost:8080
+info:
+  contact: {}
+  description: This is a sample server CSV Manipulator server.
+  title: CSV Manipulator API
+  version: "1.0"
+paths:
+  /upload:
+    post:
+      consumes:
+      - multipart/form-data
+      description: Upload a CSV file and return a CSV file with all columns in uppercase
+      parameters:
+      - description: CSV file to upload
+        in: formData
+        name: csvFile
+        required: true
+        type: file
+      produces:
+      - multipart/form-data
+      responses:
+        "200":
+          description: CSV file with all columns in uppercase
+          schema:
+            type: string
+        "400":
+          description: Unable to get file
+          schema:
+            type: string
+      summary: Upload a CSV file
+swagger: "2.0"

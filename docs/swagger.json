@@ -1,0 +1,48 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "This is a sample server CSV Manipulator server.",
+        "title": "CSV Manipulator API",
+        "contact": {},
+        "version": "1.0"
+    },
+    "host": "localhost:8080",
+    "basePath": "/",
+    "paths": {
+        "/upload": {
+            "post": {
+                "description": "Upload a CSV file and return a CSV file with all columns in uppercase",
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "produces": [
+                    "multipart/form-data"
+                ],
+                "summary": "Upload a CSV file",
+                "parameters": [
+                    {
+                        "type": "file",
+                        "description": "CSV file to upload",
+                        "name": "csvFile",
+                        "in": "formData",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "CSV file with all columns in uppercase",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "400": {
+                        "description": "Unable to get file",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
