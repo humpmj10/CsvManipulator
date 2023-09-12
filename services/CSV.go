@@ -46,7 +46,7 @@ func (c *CsvService) ProcessCsv(file multipart.File, shouldSort bool, columnToSo
 
 func sortCSV(records [][]string, column int) {
 
-	result, err := strconv.Atoi(records[1][column])
+	_, err := strconv.Atoi(records[1][column])
 	isNumeric := err == nil
 
 	sort.Slice(records[1:], func(i, j int) bool {
