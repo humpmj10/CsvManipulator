@@ -5,8 +5,6 @@ import (
 	"log"
 	"net/http"
 	"strconv"
-
-	"CsvManipulator/services"
 )
 
 // UploadHandler godoc
@@ -18,7 +16,7 @@ import (
 // @Success 200 {string} string "CSV file with all columns in uppercase"
 // @Failure 400 {string} string "Unable to get file"
 // @Router /upload [post]
-func uploadHandler(w http.ResponseWriter, r *http.Request) {
+func (api *API) UploadHandler(w http.ResponseWriter, r *http.Request) {
 	// Get query parameters
 	queryParams := r.URL.Query()
 	shouldSort := queryParams.Get("sort") == "true"
@@ -51,7 +49,7 @@ func uploadHandler(w http.ResponseWriter, r *http.Request) {
 		}
 	}()
 
-	numRows, err := services.ProcessCsv(file, shouldSort, columnIndex)
+	numRows, err := api.CsvService.ProcessCsv(file, shouldSort, columnIndex)
 	if err != nil {
 		log.Println(err)
 		http.Error(w, err.Error(), http.StatusInternalServerError)

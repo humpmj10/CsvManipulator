@@ -8,10 +8,10 @@ import (
 	httpSwagger "github.com/swaggo/http-swagger"
 )
 
-func NewRouter() *mux.Router { // NewRouter returns a new router
+func (api *API) NewRouter() *mux.Router { // NewRouter returns a new router
 	router := mux.NewRouter()
 
-	router.HandleFunc("/upload", uploadHandler).Methods(http.MethodPost)
+	router.HandleFunc("/upload", api.UploadHandler).Methods(http.MethodPost)
 
 	// Swagger endpoint
 	router.PathPrefix("/swagger/").Handler(httpSwagger.WrapHandler)

@@ -1,6 +1,7 @@
 package main
 
 import (
+	"CsvManipulator/services"
 	"log"
 	"net/http"
 
@@ -16,7 +17,8 @@ import (
 // @host localhost:8080
 // @BasePath /
 func main() {
-	router := handlers.NewRouter()
+	api := handlers.API{CsvService: services.CsvService{}}
+	router := api.NewRouter()
 	log.Println("Server is listening on port 8080")
 	err := http.ListenAndServe(":8080", router)
 	if err != nil {
