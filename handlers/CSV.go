@@ -28,8 +28,6 @@ func (api *API) UploadHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	log.Println("shouldSort: ", shouldSort, "columnToSort: ", columnToSort, "columnIndex: ", columnIndex)
-
 	// Parse our multipart form, 10 << 20 specifies a maximum upload of 10 MB files.
 	err = r.ParseMultipartForm(10 << 20) // 10 MB
 	if err != nil {
@@ -66,6 +64,46 @@ func (api *API) UploadHandler(w http.ResponseWriter, r *http.Request) {
 			http.Error(w, "Error writing CSV", http.StatusInternalServerError)
 			return
 		}
+	}
+	writer.Flush()
+}
+
+func (api *API) SortCSVHandler(w http.ResponseWriter, r *http.Request) {
+	file, _, err := r.FormFile("file")
+	if err != nil {
+		log.Println(err)
+		http.Error(w, "Unable to read file", http.StatusBadRequest)
+		return
+	}
+	defer func() {
+		if err := file.Close(); err != nil {
+			log.Printf("Failed to close file: %v", err)
+		}
+	}()
+
+	reader := csv.NewReader(file)
+	records, err := reader.ReadAll()
+	if err != nil {
+		log.Println(err)
+		http.Error(w, "Unable to read csv data", http.StatusBadRequest)
+		return
+	}
+
+	sortColumn, err := strconv.Atoi(r.URL.Query().Get("column"))
+	if err != nil {
+		log.Println(err)
+		http.Error(w, "Invalid sort parameter", http.StatusBadRequest)
+		return
+	}
+
+	api.CsvService.SortCSV(records, sortColumn)
+
+	w.Header().Set("Content-Type", "text/csv")
+	w.Header().Set("Content-Disposition", "attachment; filename=sorted.csv")
+	writer := csv.NewWriter(w)
+	err = writer.WriteAll(records)
+	if err != nil {
+		return
 	}
 	writer.Flush()
 }

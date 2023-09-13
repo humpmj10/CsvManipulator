@@ -12,7 +12,7 @@ func (api *API) NewRouter() *mux.Router { // NewRouter returns a new router
 	router := mux.NewRouter()
 
 	router.HandleFunc("/upload", api.UploadHandler).Methods(http.MethodPost)
-
+	router.HandleFunc("/sort-csv", api.SortCSVHandler).Methods(http.MethodPost)
 	// Swagger endpoint
 	router.PathPrefix("/swagger/").Handler(httpSwagger.WrapHandler)
 

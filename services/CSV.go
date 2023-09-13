@@ -12,13 +12,14 @@ import (
 // CsvProcessor interface
 type CsvProcessor interface {
 	ProcessCsv(file multipart.File, shouldSort bool, columnToSort int) ([][]string, error)
+	SortCSV(records [][]string, column int)
 }
 
 // CsvService struct
 type CsvService struct{}
 
 // ProcessCsv function
-func ProcessCsv(file multipart.File, shouldSort bool, column int) ([][]string, error) {
+func (c *CsvService) ProcessCsv(file multipart.File, shouldSort bool, column int) ([][]string, error) {
 	log.Println("reading csv file")
 
 	reader := csv.NewReader(file)
@@ -37,18 +38,13 @@ func ProcessCsv(file multipart.File, shouldSort bool, column int) ([][]string, e
 	}
 
 	if shouldSort {
-		sortCSV(newRows, column)
+		c.SortCSV(newRows, column)
 	}
 
 	return newRows, nil
 }
 
-// ProcessCsv function
-func (c *CsvService) ProcessCsv(file multipart.File, shouldSort bool, columnToSort int) ([][]string, error) {
-	return ProcessCsv(file, shouldSort, columnToSort)
-}
-
-func sortCSV(records [][]string, column int) {
+func (c *CsvService) SortCSV(records [][]string, column int) {
 
 	_, err := strconv.Atoi(records[1][column])
 	isNumeric := err == nil
