@@ -17,7 +17,8 @@ Cindy,55,cindy@example.com`
 		t.Fatal(err)
 	}
 
-	sortCSV(records, 0)
+	CsvService := CsvService{}
+	CsvService.SortCSV(records, 0)
 
 	if records[1][0] != "Bob" {
 		t.Errorf("Expected Bob, got %s", records[1][0])
@@ -29,7 +30,7 @@ Cindy,55,cindy@example.com`
 		t.Errorf("Expected Jane, got %s", records[3][0])
 	}
 
-	sortCSV(records, 1)
+	CsvService.SortCSV(records, 1)
 
 	if records[1][1] != "25" {
 		t.Errorf("Expected 25, got %s", records[1][1])
@@ -41,7 +42,7 @@ Cindy,55,cindy@example.com`
 		t.Errorf("Expected 55, got %s", records[3][1])
 	}
 
-	sortCSV(records, 2)
+	CsvService.SortCSV(records, 2)
 
 	if records[1][2] != "cindy@example.com" {
 		t.Errorf("Expected cindy@example.com, got %s", records[1][2])
